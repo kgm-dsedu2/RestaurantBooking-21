@@ -126,6 +126,7 @@
     <ClCompile Include="booking_scheduler.cpp" />
     <ClCompile Include="customer.cpp" />
     <ClCompile Include="mail_sender.cpp" />
+    <ClCompile Include="monday_booking_scheduler.cpp" />
     <ClCompile Include="schedule.cpp" />
     <ClCompile Include="sms_sender.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"> %(AdditionalOptions)</AdditionalOptions>
@@ -133,6 +134,7 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"> %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'"> %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+    <ClCompile Include="sunday_booking_scheduler.cpp" />
     <ClCompile Include="test.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"> %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"> %(AdditionalOptions)</AdditionalOptions>

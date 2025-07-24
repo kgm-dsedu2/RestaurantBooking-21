@@ -2,6 +2,8 @@
 #include "booking_scheduler.cpp"
 #include "testable_sms_sender.cpp"
 #include "testable_mail_sender.cpp"
+#include "sunday_booking_scheduler.cpp"
+#include "monday_booking_scheduler.cpp"
 
 using namespace testing;
 
@@ -120,42 +122,29 @@ TEST_F(BookingItem, 이메일이있는경우에는이메일발송)
 
 TEST_F(BookingItem, 현재날짜가일요일인경우예약불가예외처리)
 {
+  BookingScheduler* bookingScheduler = new SundayBookingScheduler{ CAPACITY_PER_HOUR };
 
+  try
+  {
+    Schedule* schedule = new Schedule{ ON_THE_HOUR, UNDER_CAPACITY, CUSTOMER_WITH_MAIL };
+    bookingScheduler->addSchedule(schedule);
+    FAIL();
+  }
+  catch (std::runtime_error& e)
+  {
+    EXPECT_EQ(string{ e.what() }, string{ "Booking system is not available on sunday" });
+  }
 }
 
 TEST_F(BookingItem, 현재날짜가일요일이아닌경우예약가능)
 {
+  BookingScheduler* bookingScheduler = new MondayBookingScheduler{CAPACITY_PER_HOUR};
 
+  Schedule* schedule = new Schedule{ON_THE_HOUR, UNDER_CAPACITY, CUSTOMER_WITH_MAIL};
+  bookingScheduler->addSchedule(schedule);
+
+  EXPECT_EQ(true, bookingScheduler->hasSchedule(schedule));
 }
-
-//class BankMock : public BankInterface
-//{
-//public:
-//  MOCK_METHOD(bool, check, (), (override));
-//};
-
-
-//TEST(TS, TC1)
-//{
-//  Bank bank;
-//  Cal cal{&bank};
-//
-//  std::cout << cal.getSum(1, 2) << "\n";
-//  std::cout << cal.getSum(1, 2) << "\n";
-//}
-//
-//TEST(TS, WithMock)
-//{
-//  BankMock mk;
-//
-//  EXPECT_CALL(mk, check)
-//    .WillRepeatedly(Return(true));
-//
-//  Cal cal{&mk};
-//
-//  std::cout << cal.getSum(1, 2) << "\n";
-//  std::cout << cal.getSum(1, 2) << "\n";
-//}
 
 int main()
 {
