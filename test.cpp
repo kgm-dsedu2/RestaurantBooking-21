@@ -6,6 +6,12 @@
 
 using namespace testing;
 
+class MockCustomer : public Customer
+{
+public:
+  MOCK_METHOD(string, getEmail, (), (override));
+};
+
 class BookingItem : public Test
 {
 protected:
@@ -18,6 +24,12 @@ protected:
 
     bookingScheduler.setSmsSender(&testableSmsSender);
     bookingScheduler.setMailSender(&testableMailSender);
+
+    EXPECT_CALL(CUSTOMER, getEmail)
+      .WillRepeatedly(testing::Return(""));
+
+    EXPECT_CALL(CUSTOMER_WITH_MAIL, getEmail)
+      .WillRepeatedly(testing::Return("test@test.com"));
   }
 
 public:
@@ -40,8 +52,8 @@ public:
   tm SUNDAY_ON_THE_HOUR;
   tm MONDAY_ON_THE_HOUR;
 
-  Customer CUSTOMER{ "Fake name", "010-1234-5678" };
-  Customer CUSTOMER_WITH_MAIL{"Fake Name", "010-1234-5678", "test@test.com"};
+  MockCustomer CUSTOMER;
+  MockCustomer CUSTOMER_WITH_MAIL;
 
   const int UNDER_CAPACITY = 1;
   const int CAPACITY_PER_HOUR = 3;
